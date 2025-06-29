@@ -1,11 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BreedTemperamentList extends StatelessWidget {
   const BreedTemperamentList({
     super.key,
     this.temperament
-    });
+  });
 
   final String? temperament;
 
@@ -17,31 +18,31 @@ class BreedTemperamentList extends StatelessWidget {
         spacing: 8,
         runSpacing: 8,
         children: [
-          for(int i=0;i< temperamenList(temperament).length;i++)
+          for(int i=0;i<temperamentList(temperament).length;i++)
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 6) ,
+            padding: const EdgeInsets.symmetric(horizontal: 6),
             decoration: BoxDecoration(
               border: Border.all(
-                color: Color(0xff92A988),
-                width: 1.5,
+                color: const Color(0xff92A988),
+                width: 1.5
               ),
               borderRadius: BorderRadius.circular(20)
             ),
-            child: Text(temperamenList(temperament)[i],
-              style: TextStyle(
-                fontSize: 15,
+            child: Text(temperamentList(temperament)[i],
+              style: GoogleFonts.notoSerif(
+                fontSize: 17,
                 color: Color(0xff92A988)
-              )
+              ),
             ),
           )
         ],
       ),
     );
   }
-
-  temperamenList(String? temperament) {
-    if(temperament==null) return [];
-    return temperament.split(",").map((trait)=>trait.trim()).toList();
-  }
   
+  temperamentList(String? temperament){
+    if(temperament==null) return [];
+    return temperament.split(',').map((trait)=>trait.trim()).toList();
+  }
+
 }

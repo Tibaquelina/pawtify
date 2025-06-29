@@ -16,4 +16,10 @@ class HomeProvider extends ChangeNotifier{
     }
     notifyListeners();
   }
+
+  Color getItemColor(int index){
+    return currentIndex == index 
+      ?Color(0xffE36397)
+      : Color(0xffF2CED8);
+  }
 } 

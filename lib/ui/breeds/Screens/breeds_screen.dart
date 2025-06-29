@@ -1,7 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pawtify/domain/models/dog_breed_model.dart';
-import 'package:pawtify/ui/breeds/Screens/widgets/breed_card.dart';
+import 'package:pawtify/ui/breeds/widgets/breed_card.dart';
 import 'package:pawtify/ui/breeds/provider/breeds_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,10 +19,10 @@ class BreedsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             SizedBox(height: 25),
+            SizedBox(height: 25),
             TextField(
               decoration: InputDecoration(
-                hintText: "Buscar",
+                hintText: "Seacrh",
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
@@ -37,8 +38,8 @@ class BreedsScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Total razas",
-                  style: TextStyle(fontSize: 24),
+                Text("Total breeds",
+                  style: GoogleFonts.junge(fontSize: 24),
                 ),
                 Text(breedsProvider.listBreeds.length.toString(),
                   style: TextStyle(fontSize: 24),
@@ -50,7 +51,6 @@ class BreedsScreen extends StatelessWidget {
               thickness: 0.7,
               color: Colors.black,
             ),
-            
             SizedBox(height: 15),
             Expanded(
               child:ListView.builder(

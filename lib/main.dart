@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pawtify/data/impl/app_impl.dart';
+import 'package:pawtify/data/impl/secure_storage_impl.dart';
 import 'package:pawtify/data/repositories/app_repository.dart';
+import 'package:pawtify/data/repositories/secure_storage_repository.dart';
 import 'package:pawtify/domain/usecaese/app_use_case.dart';
 import 'package:pawtify/ui/breeds/provider/breeds_provider.dart';
 import 'package:pawtify/ui/home/provider/home_provider.dart';
@@ -23,14 +25,19 @@ class MyApp extends StatelessWidget {
         Provider<AppRepository>(
           create: (_) => AppImpl(),
         ),
+        Provider<SecureStorageRepository>(
+          create: (_) => SecureStorageImpl()
+        ),
         //*USE CASES
-        ProxyProvider<AppRepository, AppUseCase>(
-          update: (_,repo, __)  => AppUseCase(repo),
+        ProxyProvider2<AppRepository, SecureStorageRepository,AppUseCase>(
+          update: (_,appRepo, secureRepo, __)  => AppUseCase(appRepo, secureRepo),
         ),
         //*PROVIDERS
         ChangeNotifierProvider(create: (_)=> HomeProvider()),
         ChangeNotifierProxyProvider<AppUseCase, BreedsProvider>(
-          create: (_)=> BreedsProvider(AppUseCase(AppImpl())),
+          create: (_)=> BreedsProvider(
+            AppUseCase(AppImpl(), SecureStorageImpl())
+          ),
           update: (_, useCase, __) => BreedsProvider(useCase)
         ),
       ],

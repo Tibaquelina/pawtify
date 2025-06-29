@@ -1,7 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'package:pawtify/main.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pawtify/ui/breeds/Screens/breeds_screen.dart';
+import 'package:pawtify/ui/breeds/Screens/favorites_screen.dart';
 import 'package:pawtify/ui/home/provider/home_provider.dart';
 import 'package:pawtify/ui/shared/app_background.dart';
 import 'package:pawtify/ui/shared/app_logo.dart';
@@ -32,25 +33,37 @@ class HomeScreen extends StatelessWidget {
           controller: homeProvider.controller,
           children: [
             BreedsScreen(),
-            Center(
-              child: Text("Favoritos"),
-            ),
+            FavoritesScreen()
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: homeProvider.currentIndex,
         onTap: homeProvider.setCurrentIndex,
+        selectedLabelStyle: GoogleFonts.junge(
+          fontSize: 16,
+          color: homeProvider.getItemColor(homeProvider.currentIndex),
+        ),
+        unselectedLabelStyle: GoogleFonts.junge(
+          fontSize: 16,
+          color: homeProvider.getItemColor(homeProvider.currentIndex==1?0:1),
+        ),
         items: [
           BottomNavigationBarItem(
             icon: Transform.rotate(
               angle: 270 * pi /180,
-              child: Image.asset("assets/paw.png",height: 30)
+              child: Image.asset("assets/paw.png",
+                height: 30,
+                color: homeProvider.getItemColor(0),
+              )
             ),
-            label: "Razas"
+            label: "Breeds"
           ),
           BottomNavigationBarItem(
-            icon: Image.asset("assets/h.png",height: 30),
+            icon: Image.asset("assets/h.png",
+              height: 30,
+              color: homeProvider.getItemColor(1),
+            ),
             label: "Favorites"
           ),
         ],

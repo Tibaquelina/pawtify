@@ -1,9 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pawtify/domain/models/dog_breed_model.dart';
-import 'package:pawtify/ui/breeds/Screens/widgets/breed_temperament_list.dart';
+import 'package:pawtify/ui/breeds/widgets/breed_temperament_list.dart';
+import 'package:pawtify/ui/breeds/provider/breeds_provider.dart';
 import 'package:pawtify/ui/shared/app_background.dart';
 import 'package:pawtify/utils/navigator_utils.dart';
+import 'package:provider/provider.dart';
 
 class BreedDetailsScreen extends StatelessWidget {
   const BreedDetailsScreen({
@@ -17,10 +20,11 @@ class BreedDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var textStyle = TextStyle(
+    var textStyle = GoogleFonts.notoSerif(
       color: Color(0xff979797),
       fontSize: 20,
     );
+    final breedsProvider = context.watch<BreedsProvider>();
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -47,12 +51,13 @@ class BreedDetailsScreen extends StatelessWidget {
                         width: 310,
                         child: Text(breed.name,
                           maxLines: 3,
-                          style: TextStyle(
+                          style: GoogleFonts.konkhmerSleokchher(
                             fontSize: 32,
                           ),
                         ),
                       ),
                       GestureDetector(
+                        onTap: ()=> breedsProvider.updateFavoriteId(breed.id),
                         child: Container(
                           height: 50,
                           width: 50,
@@ -61,7 +66,7 @@ class BreedDetailsScreen extends StatelessWidget {
                             color: Colors.white,
                           ),
                           child: Center(
-                            child: Icon(Icons.favorite_border,size:35),
+                            child: Icon(breedsProvider.getFavoriteIcon(breed.id),size:35),
                           ),
                         ),
                       )

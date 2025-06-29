@@ -5,16 +5,16 @@ class DogNetworkImage extends StatelessWidget {
   const DogNetworkImage({
     super.key,
     required this.imageFuture,
-    required this.white,
+    required this.width,
     required this.height,
   });
 
   final Future<String?> imageFuture;
-  final double white, height;
+  final double width, height;
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: white,
+      width: width,
       height: height,
       decoration: BoxDecoration(
         color: Colors.grey,

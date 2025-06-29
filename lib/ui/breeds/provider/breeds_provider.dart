@@ -14,6 +14,7 @@ class BreedsProvider extends ChangeNotifier {
   List<DogBreed> _filterbreeds = [];
   List<DogBreed> listBreeds = [];
   bool isSearchEmpety = false;
+  List<int> favoriteIds = [];
 
 
   Future<void> getAllBreeds()async{
@@ -21,8 +22,9 @@ class BreedsProvider extends ChangeNotifier {
     if(newBreeds != null){
       _breeds = newBreeds;
       notifyListeners();
-       updateLiistBreds();
+       updateListBreds();
       log("Breeds: ${listBreeds.length}");
+      updateFavoriteId(999999999);
     }
   }
 
@@ -40,9 +42,10 @@ class BreedsProvider extends ChangeNotifier {
       isSearchEmpety = true;
     }
     notifyListeners(); 
-    updateLiistBreds();
+    updateListBreds();
   }
-  void updateLiistBreds(){
+
+  void updateListBreds(){
     listBreeds = _filterbreeds.isEmpty
       ?isSearchEmpety
         ?_filterbreeds
@@ -50,4 +53,15 @@ class BreedsProvider extends ChangeNotifier {
       :_filterbreeds;
     notifyListeners();
   }
+
+  Future<void> updateFavoriteId(int id)async{
+    bool add = !favoriteIds.contains(id);
+    favoriteIds = await appUseCase.updateFavoriteId(id, add: add);
+    notifyListeners(); 
+  }
+
+  IconData getFavoriteIcon(int id)=>favoriteIds.contains(id)?Icons.favorite:Icons.favorite_border;
+  
+
+
 }

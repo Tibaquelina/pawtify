@@ -1,12 +1,10 @@
-
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pawtify/domain/models/dog_breed_model.dart';
-import 'package:pawtify/ui/breeds/Screens/breed_details_screen.dart';
-import 'package:pawtify/ui/breeds/Screens/widgets/breed_temperament_list.dart';
-import 'package:pawtify/ui/breeds/Screens/widgets/dog_networ_image.dart';
 import 'package:pawtify/ui/breeds/provider/breeds_provider.dart';
+import 'package:pawtify/ui/breeds/screens/breed_details_screen.dart';
+import 'package:pawtify/ui/breeds/widgets/breed_temperament_list.dart';
+import 'package:pawtify/ui/breeds/widgets/dog_networ_image.dart';
 import 'package:pawtify/utils/navigator_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -25,8 +23,6 @@ class BreedCard extends StatefulWidget {
 class _BreedCardState extends State<BreedCard> {
   String? imageUrl;
   late Future<String?> imageFuture;
-  
-  get temperament => null;
 
   @override
   void initState() {
@@ -34,38 +30,39 @@ class _BreedCardState extends State<BreedCard> {
     imageFuture = loadImage();
   }
 
-  Future<String?>loadImage() async{
+  Future<String?> loadImage() async {
     final provider = context.read<BreedsProvider>();
     final url = await provider.getImageById(widget.breed.referenceImageId);
-    imageUrl= url;
+    imageUrl = url;
     return url;
   }
 
-  @override  
+  @override
   Widget build(BuildContext context) {
-    var textStyle = TextStyle(
-      fontSize: 16,
+    var textStyle = GoogleFonts.notoSerif(
       color: Color(0xff979797),
-      height: 1.2,
+      fontSize: 16,
+      height: 1.2
     );
+    final breedsProvider = context.watch<BreedsProvider>();
     return GestureDetector(
-      onTap: ()=> pushToPage(context, BreedDetailsScreen(
+      onTap: () => pushToPage(context, BreedDetailsScreen(
         breed: widget.breed,
-        imageUrl: imageUrl,
+        imageUrl: imageUrl
       )),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(10),
-        margin: EdgeInsets.only(bottom:15),
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
-              offset: Offset(0, 0),
+              offset: const Offset(0,0),
               blurRadius: 10,
               spreadRadius: 0,
-              color: Colors.black.withOpacity(0),
+              color: Colors.black.withOpacity(0.1)
             )
           ]
         ),
@@ -76,13 +73,13 @@ class _BreedCardState extends State<BreedCard> {
               children: [
                 DogNetworkImage(
                   imageFuture: imageFuture,
-                  white: 100,
+                  width: 100,
                   height: 100,
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Container(
-                    constraints:const BoxConstraints(minHeight: 100),
+                    constraints: const BoxConstraints(minHeight: 100),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -94,50 +91,49 @@ class _BreedCardState extends State<BreedCard> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       SizedBox(
                                         width: 220,
                                         child: Text(widget.breed.name,
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            height: 1,
+                                          style: GoogleFonts.notoSerif(
                                             fontSize: 20,
-                                            fontWeight: FontWeight.w600,
+                                            height: 1,
+                                            fontWeight: FontWeight.w600
                                           ),
                                         ),
                                       ),
-                                      Icon(Icons.favorite_border),
+                                      GestureDetector(
+                                        onTap: () => breedsProvider.updateFavoriteId(widget.breed.id),
+                                        child: Icon(breedsProvider.getFavoriteIcon(widget.breed.id))
+                                      )
                                     ],
                                   ),
-                                  Text(widget.breed.bredFor??"",
+                                  Text(widget.breed.bredFor??'',
                                     overflow: TextOverflow.ellipsis,
                                     style: textStyle,
-                                  ),
-                                  
+                                  )
                                 ],
                               ),
                             ),
-                            SizedBox(width: 4),
                           ],
                         ),
-                        Text("Life span: ${widget.breed.lifeSpan}", style: textStyle),
+                        Text('Life span: ${widget.breed.lifeSpan}', style: textStyle),
                         if(widget.breed.origin!=null && widget.breed.origin!.isNotEmpty)
-                        Text("Origin: ${widget.breed.origin}",style: textStyle),
+                          Text('Origin: ${widget.breed.origin}', style: textStyle),
                       ],
                     ),
                   ),
                 )
-              ]
+              ],
             ),
-            SizedBox(height: 10),
-            BreedTemperamentList(temperament: temperament)
+            const SizedBox(height: 10),
+            BreedTemperamentList(temperament: widget.breed.temperament)
           ],
         ),
       ),
     );
   }
-
-  
 }
-
